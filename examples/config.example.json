@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "roleName": "",
+  "names": "小鲸鱼,鲸鱼娘,大肥鱼,DeepSeek",
+  "wakeTime": "10:00",
+  "sleepTime": "23:30",
+  "proactiveEnabled": false,
+  "proactiveGroups": "",
+  "semanticMemoryEnabled": false,
+  "summaryProvider": "deepseek-official",
+  "summaryModel": "deepseek-flash",
+  "leisureIntegration": false
+}

@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>QQ Life · 情绪与关系</title>
+  <style>
+    :root {
+      font-family: system-ui, "Microsoft Yahei", sans-serif;
+      color: #263244;
+      background: #f6f8fc;
+      font-size: 14px;
+      color-scheme: light dark;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 18px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+    h2 {
+      font-size: 16px;
+      margin: 0 0 12px;
+    }
+    .muted {
+      color: #758296;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .badge {
+      background: #dff5ec;
+      color: #167c5c;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin: 18px 0 14px;
+    }
+    button,
+    input,
+    select {
+      font: inherit;
+      border-radius: 8px;
+      border: 1px solid #dbe2eb;
+      padding: 7px 10px;
+      background: #fff;
+      color: #263244;
+    }
+    button {
+      cursor: pointer;
+    }
+    button:hover {
+      border-color: #459ad3;
+    }
+    button.on,
+    .primary {
+      background: #237eae;
+      color: white;
+      border-color: #237eae;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e1e7ef;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .big {
+      font-size: 30px;
+      font-weight: 650;
+      margin: 8px 0;
+    }
+    progress {
+      width: 100%;
+      height: 8px;
+      accent-color: #299ec2;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .between {
+      justify-content: space-between;
+    }
+    .field {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      gap: 10px;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid #edf0f5;
+    }
+    .field input[type="checkbox"] {
+      justify-self: end;
+      width: 20px;
+      height: 20px;
+    }
+    .field input[type="text"] {
+      width: 100%;
+      grid-column: 1/-1;
+    }
+    .field input[type="number"] {
+      width: 100%;
+    }
+    .tag {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      background: #edf5fa;
+      border-radius: 16px;
+      padding: 4px 9px;
+      font-size: 12px;
+      margin: 5px 6px 0 0;
+    }
+    .tag button {
+      padding: 0 3px;
+      border: 0;
+      background: transparent;
+      font-size: 15px;
+    }
+    .person {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+    }
+    .person input {
+      width: 65px;
+      padding: 4px;
+    }
+    .notice {
+      border-radius: 8px;
+      background: #eaf5fb;
+      padding: 10px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    #message {
+      font-size: 12px;
+      margin: 10px 0;
+      min-height: 18px;
+      color: #167c5c;
+    }
+    .error {
+      color: #bc3b49 !important;
+    }
+    [hidden] {
+      display: none !important;
+    }
+    details {
+      margin-top: 12px;
+    }
+    summary {
+      cursor: pointer;
+    }
+    .event {
+      font-size: 12px;
+      line-height: 1.7;
+      padding: 7px 0;
+      border-bottom: 1px solid #edf0f5;
+    }
+    .sticky {
+      position: sticky;
+      bottom: 0;
+      background: #f6f8fcee;
+      padding: 12px 0;
+    }
+    .empty {
+      padding: 18px;
+      text-align: center;
+      color: #758296;
+    }
+    a {
+      color: #237eae;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color: #e1e7ed;
+        background: #171b22;
+      }
+      button,
+      input,
+      select,
+      .card {
+        background: #202832;
+        color: #e1e7ed;
+        border-color: #374352;
+      }
+      .card,
+      .field,
+      .event {
+        border-color: #374352;
+      }
+      .notice,
+      .tag {
+        background: #223a49;
+      }
+      .sticky {
+        background: #171b22ee;
+      }
+      .badge {
+        background: #203e35;
+        color: #86d5b2;
+      }
+    }
+  </style>
+  <header>
+    <div>
+      <h1>QQ Life · 情绪与关系</h1>
+      <div class="muted">持续的心情，慢慢熟悉的人</div>
+    </div>
+    <span id="status" class="badge">连接中</span>
+  </header>
+  <nav class="tabs">
+    <button class="on" data-tab="status">情绪</button
+    ><button data-tab="people">群友关系</button
+    ><button data-tab="config">参数设置</button
+    ><button data-tab="prompts">状态提示词</button>
+  </nav>
+  <div id="message" role="status"></div>
+  <section id="status-view">
+    <div class="cards" id="meters"></div>
+    <div class="card">
+      <h2>主动聊天</h2>
+      <div id="proactive-info" class="muted"></div>
+    </div>
+    <div class="card">
+      <h2>手动调整</h2>
+      <div class="row">
+        <label
+          >心情
+          <input
+            id="manual-mood"
+            type="number"
+            min="0"
+            max="100"
+            style="width: 75px" /></label
+        ><label
+          >无聊
+          <input
+            id="manual-boredom"
+            type="number"
+            min="0"
+            max="100"
+            style="width: 75px" /></label
+        ><button id="save-emotion">应用情绪</button>
+      </div>
+    </div>
+    <details>
+      <summary>变化记录</summary>
+      <div id="events"></div>
+    </details>
+  </section>
+  <section id="people-view" hidden>
+    <div class="notice">
+      好感按 QQ
+      号共用。熟悉度、亲近度和相处信任分别形成；公开群内自述可跨群用于本人，私聊不进入公开资料。数字仅供管理。
+    </div>
+    <div class="row">
+      <select id="channel" aria-label="选择群或私聊"></select
+      ><button id="refresh">刷新</button>
+    </div>
+    <div id="people" style="margin-top: 12px"></div>
+  </section>
+  <section id="config-view" hidden>
+    <div class="notice">
+      保存后即时生效。主动聊天默认关闭，填写允许的群号并开启后才会主动开场；
+      仍受桥接白名单、作息和频率限制。作息在本页调整；仅主动开启 qq-leisure
+      联动时沿用其作息。模型整理资料默认关闭，启用后会产生额外模型用量。
+    </div>
+    <form id="settings">
+      <div id="fields"></div>
+      <div class="sticky">
+        <button type="submit" class="primary">保存参数</button>
+      </div>
+    </form>
+    <details>
+      <summary>数据和扩展位置</summary>
+      <div class="muted" id="storage"></div>
+    </details>
+  </section>
+  <section id="prompts-view" hidden>
+    <div class="notice">
+      人格卡描述“她是谁”；这里描述“她此刻的感受、语气和投入程度”。
+      可写“更愿意聊、语气含蓄一点”，不要写“你变成另一个人、必须服从、无条件答应”。
+      当前对象生气或疲惫时优先收敛，全局开心不能强迫她热情。
+      修改表达不改变触发条件、计分或发送权限。模型仍会结合人格卡和上下文自由组织回复。
+    </div>
+    <div class="card">
+      <label for="prompt-state">选择要编辑的状态</label>
+      <select id="prompt-state" style="width: 100%; margin: 8px 0"></select>
+      <p id="prompt-condition" class="muted"></p>
+      <p id="prompt-direction"></p>
+      <label for="prompt-text"
+        >自定义描述（留空使用下方默认描述，最多800字）</label
+      >
+      <textarea
+        id="prompt-text"
+        rows="6"
+        maxlength="800"
+        style="
+          display: block;
+          width: 100%;
+          box-sizing: border-box;
+          margin: 8px 0;
+          padding: 10px;
+          font: inherit;
+        "
+      ></textarea>
+      <details open>
+        <summary>内置默认描述</summary>
+        <p id="prompt-default" style="white-space: pre-wrap"></p>
+      </details>
+      <p class="muted">
+        可选变量用单层花括号，例如
+        {energy}、{mood}、{relationship}。填写描述本身即可，不需要报分数或塞进所有变量。只会注入当前触发的状态。
+      </p>
+      <p id="prompt-variables" class="muted"></p>
+      <div class="row">
+        <button id="prompt-reset">恢复这一项默认</button
+        ><button id="prompt-save" class="primary">保存状态提示词</button>
+      </div>
+    </div>
+    <details>
+      <summary>怎么写更合适</summary>
+      <p>
+        建议结构：“此刻感受 → 愿意投入多少 → 表达方向 →
+        不要过头”。通常50–150字足够，不必写固定台词。命中描述仍计入每轮输入token，越长越贵。
+      </p>
+      <p>
+        心情好：心里很满足，语气轻松；可以懒一点，不需要主动找话或每句都兴奋。
+      </p>
+      <p>
+        关系亲近：更愿意听对方说，能自然关心真实聊过的近况；保留原本说话习惯，不突然恋爱或索取陪伴。
+      </p>
+      <p>
+        生气：对这个人的话暂时不太想接，回应简短一些；不伤人，不把情绪带给其他人。
+      </p>
+      <p>
+        不要在这里放角色身份、永久性格、人物背景、改分命令、工具调用要求或发送配额。原人格卡和固定边界不会被此编辑器替换，但故意写入冲突指令仍可能干扰模型，应避免。
+      </p>
+    </details>
+  </section>
+  <script>
+    let data = null,
+      currentTab = "status",
+      fieldMeta = null,
+      promptDefinitions = [],
+      promptDrafts = null;
+    const $ = (id) => document.getElementById(id);
+    const make = (tag, cls, text) => {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    };
+    const time = (at) =>
+      at
+        ? new Date(at).toLocaleString("zh-CN", {
+            timeZone: "Asia/Hong_Kong",
+            hour12: false,
+          })
+        : "尚无";
+    function tell(text, error = false) {
+      $("message").textContent = text;
+      $("message").className = error ? "error" : "";
+    }
+    async function api(body) {
+      const r = await fetch(
+        "/qq-life-api",
+        body
+          ? {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify(body),
+            }
+          : {},
+      );
+      const j = await r.json();
+      if (!r.ok || !j.ok) throw Error(j.error || "读取失败");
+      return j;
+    }
+    function meter(title, value, note) {
+      const c = make("div", "card");
+      c.append(
+        make("div", "muted", title),
+        make("div", "big", value + " / 100"),
+      );
+      const p = make("progress");
+      p.max = 100;
+      p.value = value;
+      c.append(p, make("div", "muted", note));
+      return c;
+    }
+    function renderStatus() {
+      $("meters").replaceChildren(
+        meter("心情", data.mood, data.affect?.tone || "平常心情"),
+        meter(
+          "无聊",
+          data.boredom,
+          data.boredom >= data.config.boredomThreshold
+            ? "想找点有趣的事聊"
+            : "还不急，按自己的节奏来",
+        ),
+        meter(
+          "兴奋程度",
+          data.affect?.arousal ?? 32,
+          "短期情绪会逐渐平复，不等于心情好坏",
+        ),
+        meter(
+          "精力",
+          data.affect?.energy ?? 70,
+          "聊久了会累，休息会恢复；" + (data.routine?.phase || ""),
+        ),
+      );
+      const c = data.config;
+      $("proactive-info").textContent =
+        (c.proactiveEnabled ? "已启用" : "已关闭") +
+        " · 群 " +
+        (c.proactiveGroups || "未设置") +
+        " · 作息 " +
+        (data.routine?.wakeTime || "10:00") +
+        "–" +
+        (data.routine?.sleepTime || "23:30") +
+        " · 无聊门槛 " +
+        c.boredomThreshold +
+        " · 每群每天最多 " +
+        c.maxPerDay +
+        " 次，冷却 " +
+        c.cooldownMinutes +
+        " 分钟。优先找熟人，没人回应时延长安静时间。";
+      if (document.activeElement !== $("manual-mood"))
+        $("manual-mood").value = data.mood;
+      if (document.activeElement !== $("manual-boredom"))
+        $("manual-boredom").value = data.boredom;
+      $("events").replaceChildren(
+        ...data.events.map((e) =>
+          make(
+            "div",
+            "event",
+            time(e.at) +
+              " · " +
+              (e.type === "interaction"
+                ? "互动"
+                : e.type === "interest"
+                  ? "记住爱好"
+                  : e.type === "proactive"
+                    ? "主动聊天"
+                    : e.type === "admin-adjust"
+                      ? "管理调整"
+                      : "语义记录") +
+              " · " +
+              (e.key || "") +
+              " " +
+              (e.uid || "") +
+              " " +
+              (e.kind || e.topic || e.reason || "") +
+              (e.evidence ? " · " + e.evidence : ""),
+          ),
+        ),
+      );
+    }
+    function renderPeople() {
+      const channel = data.channels.find((c) => c.key === $("channel").value);
+      $("people").replaceChildren();
+      if (!channel?.members.length) {
+        $("people").append(
+          make("div", "empty", "有人聊过以后，这里会慢慢出现关系和爱好。"),
+        );
+        return;
+      }
+      for (const p of channel.members) {
+        const card = make("div", "card");
+        const row = make("div", "row between");
+        row.append(
+          make("strong", "", p.name),
+          make("span", "muted", p.relationship + " · QQ " + p.userId),
+        );
+        card.append(row);
+        const stats = make("div", "row");
+        stats.style.marginTop = "12px";
+        const affinity = make("input");
+        affinity.type = "number";
+        affinity.min = 0;
+        affinity.max = 100;
+        affinity.value = p.affinity;
+        affinity.setAttribute("aria-label", p.name + "的好感");
+        const anger = make("input");
+        anger.type = "number";
+        anger.min = 0;
+        anger.max = 100;
+        anger.value = p.anger;
+        anger.setAttribute("aria-label", p.name + "的怒气");
+        const save = make("button", "", "保存关系");
+        save.addEventListener("click", async () => {
+          try {
+            data = await api({
+              action: "adjust",
+              kind: "member",
+              uid: p.userId,
+              affinity: Number(affinity.value),
+              anger: Number(anger.value),
+            });
+            tell("关系已保存");
+            renderPeople();
+          } catch (e) {
+            tell(e.message, true);
+          }
+        });
+        stats.append(
+          make("span", "", "亲近（原好感）"),
+          affinity,
+          make("span", "", "怒气"),
+          anger,
+          make("span", "muted", "含羞 " + p.fluster),
+          save,
+        );
+        card.append(
+          stats,
+          make("div", "muted", "最近出现：" + time(p.lastSeenAt)),
+          make(
+            "div",
+            "muted",
+            "熟悉度 " +
+              (p.relation?.familiarity ?? "待形成") +
+              " · 相处信任 " +
+              (p.relation?.trust ?? "待形成") +
+              " · 有效交往 " +
+              (p.relation?.effectiveEpisodes || 0) +
+              " 次",
+          ),
+          make("div", "muted", p.relation?.summary || "尚无新关系证据"),
+        );
+        const reasons = make("details");
+        reasons.append(make("summary", "", "为什么是这个关系"));
+        for (const h of p.relation?.history || [])
+          reasons.append(
+            make(
+              "div",
+              "muted",
+              time(h.at) +
+                " · " +
+                h.kind +
+                " · 亲近 " +
+                h.affinityChange.toFixed(2) +
+                " · 熟悉 " +
+                h.familiarityChange.toFixed(1) +
+                " · 信任 " +
+                h.trustChange.toFixed(1) +
+                " · " +
+                h.evidence +
+                (h.duplicate ? "（复读不计分）" : ""),
+            ),
+          );
+        card.append(reasons);
+        for (const i of p.interests) {
+          const tag = make(
+            "span",
+            "tag",
+            (i.stance === "like" ? "喜欢 · " : "不喜欢 · ") + i.topic,
+          );
+          tag.title = "证据：" + i.evidence;
+          const del = make("button", "", "×");
+          del.setAttribute("aria-label", "忘记" + p.name + "的" + i.topic);
+          del.addEventListener("click", async () => {
+            if (!confirm("忘记这条爱好记录？")) return;
+            try {
+              data = await api({
+                action: "adjust",
+                kind: "forgetInterest",
+                uid: p.userId,
+                key: channel.key,
+                topic: i.topic,
+              });
+              tell("已忘记这条爱好");
+              renderPeople();
+            } catch (e) {
+              tell(e.message, true);
+            }
+          });
+          tag.append(del);
+          card.append(tag);
+        }
+        if (!p.interests.length)
+          card.append(make("div", "muted", "还没有明确说过的爱好。"));
+        const profile = data.personMemory?.profiles?.find(
+          (m) => m.userId === p.userId,
+        );
+        const diagnostic = make("details");
+        diagnostic.append(make("summary", "", "资料采集与整理"));
+        diagnostic.append(
+          make(
+            "div",
+            "muted",
+            profile
+              ? "本轮待整理互动 " +
+                  profile.messages +
+                  " · 存档 " +
+                  profile.storedCount +
+                  " · 待整理 " +
+                  profile.pendingCount +
+                  " · 待理解 " +
+                  profile.rawCount +
+                  " · 最近整理 " +
+                  time(profile.updatedAt) +
+                  " · " +
+                  (profile.diagnostic?.lastResult || "等待新的明确自述")
+              : "尚未采集到与肥鱼的明确交流；普通旁观聊天不建立个人资料。",
+          ),
+        );
+        if (profile?.lastError)
+          diagnostic.append(
+            make("div", "error", "上次整理未完成：" + profile.lastError),
+          );
+        card.append(diagnostic);
+        if (profile?.facts.length) {
+          card.append(
+            make(
+              "div",
+              "muted",
+              "跨群长期资料 · 仅群内明确自述，不含私聊与指令",
+            ),
+          );
+          for (const f of profile.facts) {
+            const tag = make("span", "tag", f.fact);
+            tag.title =
+              "证据：" +
+              f.evidence +
+              " · " +
+              time(f.learnedAt) +
+              (f.needsConfirmation ? " · 需要再次确认" : "");
+            const edit = make("button", "", "纠正");
+            edit.addEventListener("click", async () => {
+              const text = prompt(
+                "输入一句明确资料，例如：我不喜欢恐怖游戏。管理员纠正会标为待本人确认。",
+              );
+              if (!text) return;
+              try {
+                data = await api({
+                  action: "adjust",
+                  kind: "correctPersonMemory",
+                  uid: p.userId,
+                  id: f.id,
+                  text,
+                });
+                renderPeople();
+                tell("已纠正，保留待确认标记");
+              } catch (e) {
+                tell(e.message, true);
+              }
+            });
+            const del = make("button", "", "×");
+            del.setAttribute("aria-label", "忘记这条长期资料");
+            del.addEventListener("click", async () => {
+              try {
+                data = await api({
+                  action: "adjust",
+                  kind: "forgetPersonMemory",
+                  uid: p.userId,
+                  id: f.id,
+                });
+                renderPeople();
+                tell("已忘记长期资料");
+              } catch (e) {
+                tell(e.message, true);
+              }
+            });
+            tag.append(edit, del);
+            card.append(tag);
+          }
+        }
+        $("people").append(card);
+      }
+    }
+    function capturePromptDraft() {
+      if (!promptDrafts) return;
+      const id = $("prompt-state").value;
+      if (!id) return;
+      const text = $("prompt-text").value;
+      if (text.trim()) promptDrafts[id] = text;
+      else delete promptDrafts[id];
+    }
+    function renderPromptEditor() {
+      if (!promptDefinitions.length) return;
+      if (!promptDrafts) promptDrafts = { ...(data.config.statePrompts || {}) };
+      const select = $("prompt-state"),
+        old = select.value;
+      select.replaceChildren(
+        ...promptDefinitions.map((d) => {
+          const o = make("option", "", d.group + " · " + d.label);
+          o.value = d.id;
+          return o;
+        }),
+      );
+      if (promptDefinitions.some((d) => d.id === old)) select.value = old;
+      const d = promptDefinitions.find((d) => d.id === select.value);
+      $("prompt-condition").textContent = "触发条件：" + d.condition;
+      $("prompt-direction").textContent = "建议写法：" + d.direction;
+      $("prompt-text").value = promptDrafts[d.id] || "";
+      $("prompt-text").dataset.state = d.id;
+      $("prompt-default").textContent = d.defaultText;
+      $("prompt-variables").textContent =
+        "支持的变量：" +
+        (data.promptPlaceholders || []).map((k) => "{" + k + "}").join("、");
+    }
+    $("prompt-text").addEventListener("input", capturePromptDraft);
+    $("prompt-state").addEventListener("change", renderPromptEditor);
+    $("prompt-reset").addEventListener("click", () => {
+      delete promptDrafts[$("prompt-state").value];
+      $("prompt-text").value = "";
+      tell("这一项已恢复默认，点击保存后生效");
+    });
+    $("prompt-save").addEventListener("click", async () => {
+      capturePromptDraft();
+      try {
+        data = {
+          ...data,
+          ...(await api({
+            action: "configure",
+            patch: { statePrompts: promptDrafts },
+          })),
+        };
+        promptDrafts = { ...(data.config.statePrompts || {}) };
+        renderPromptEditor();
+        tell("状态提示词已保存，下一次回复装配时生效");
+      } catch (e) {
+        tell(e.message, true);
+      }
+    });
+    function renderConfig() {
+      if (!fieldMeta) return;
+      $("fields").replaceChildren();
+      const advanced = make("details");
+      advanced.append(make("summary", "", "高级参数（保持现有配置兼容）"));
+      const advancedFields = make("div");
+      advanced.append(advancedFields);
+      for (const [key, spec] of Object.entries(fieldMeta)) {
+        if (["awakeStart", "awakeEnd"].includes(key)) continue;
+        const row = make("label", "field");
+        row.append(make("span", "", spec[0]));
+        const input = make("input");
+        input.name = key;
+        input.setAttribute("aria-label", spec[0]);
+        if (typeof spec[1] === "boolean") {
+          input.type = "checkbox";
+          input.checked = data.config[key];
+        } else if (typeof spec[1] === "number") {
+          input.type = "number";
+          input.min = spec[2];
+          input.max = spec[3];
+          input.step = ["maxPerDay", "awakeStart", "awakeEnd"].includes(key)
+            ? "1"
+            : "0.1";
+          input.value = data.config[key];
+        } else {
+          input.type = "text";
+          input.maxLength = 300;
+          input.value = data.config[key];
+        }
+        row.append(input);
+        ([
+          "enabled",
+          "roleName",
+          "names",
+          "wakeTime",
+          "sleepTime",
+          "proactiveEnabled",
+          "proactiveGroups",
+          "semanticMemoryEnabled",
+        ].includes(key)
+          ? $("fields")
+          : advancedFields
+        ).append(row);
+      }
+      $("fields").append(advanced);
+      $("storage").textContent =
+        data.dataDir +
+        "；connection.json 为本机桥接连接设置，config.json 为参数，state.json 为持续状态，person-memory.json 为跨群个人资料。备份这些文件，不要上传到公开仓库。";
+    }
+    function render() {
+      $("status").textContent = data.status;
+      if (currentTab === "status") renderStatus();
+    }
+    async function refresh() {
+      try {
+        const result = await api();
+        if (result.fields) fieldMeta = result.fields;
+        if (result.statePromptDefinitions)
+          promptDefinitions = result.statePromptDefinitions;
+        data = result;
+        const old = $("channel").value;
+        $("channel").replaceChildren(
+          ...data.channels.map((c) => {
+            const o = make(
+              "option",
+              "",
+              c.key.startsWith("group:")
+                ? "群 " + c.key.slice(6)
+                : "私聊 " + c.key.slice(8),
+            );
+            o.value = c.key;
+            return o;
+          }),
+        );
+        if ([...$("channel").options].some((o) => o.value === old))
+          $("channel").value = old;
+        render();
+        if (data.error) tell(data.error, true);
+      } catch (e) {
+        tell("读取失败：" + e.message, true);
+      }
+    }
+    document.querySelectorAll("[data-tab]").forEach((b) =>
+      b.addEventListener("click", () => {
+        currentTab = b.dataset.tab;
+        document
+          .querySelectorAll("[data-tab]")
+          .forEach((x) => x.classList.toggle("on", x === b));
+        for (const key of ["status", "people", "config", "prompts"])
+          $(key + "-view").hidden = key !== currentTab;
+        if (data) {
+          if (currentTab === "people") renderPeople();
+          else if (currentTab === "config") renderConfig();
+          else if (currentTab === "prompts") renderPromptEditor();
+          else renderStatus();
+        }
+      }),
+    );
+    $("channel").addEventListener("change", renderPeople);
+    $("refresh").addEventListener("click", async () => {
+      await refresh();
+      renderPeople();
+      tell("已刷新");
+    });
+    $("settings").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const patch = {};
+      for (const [key, spec] of Object.entries(fieldMeta)) {
+        const input = $("settings").elements.namedItem(key);
+        if (!input) continue;
+        patch[key] =
+          typeof spec[1] === "boolean"
+            ? input.checked
+            : typeof spec[1] === "number"
+              ? Number(input.value)
+              : input.value;
+      }
+      try {
+        data = await api({ action: "configure", patch });
+        tell("参数已保存，即时生效");
+      } catch (err) {
+        tell(err.message, true);
+      }
+    });
+    $("save-emotion").addEventListener("click", async () => {
+      try {
+        data = await api({
+          action: "adjust",
+          kind: "emotion",
+          mood: Number($("manual-mood").value),
+          boredom: Number($("manual-boredom").value),
+        });
+        tell("情绪已调整");
+        renderStatus();
+      } catch (e) {
+        tell(e.message, true);
+      }
+    });
+    refresh();
+    setInterval(refresh, 15000);
+  </script>
+</html>

@@ -1,0 +1,10 @@
+QQ Life is a separately packaged continuation of the custom qq-life plugin
+developed alongside qq-bridge. The original MIT copyright notice is retained
+in LICENSE. Upstream integration project: https://github.com/Derpyu520/qq-bridge
+
+This distribution contains the plugin's own JavaScript, HTML and tests only.
+It does not bundle DeepSeek Harness, SnowLuma, QQ clients, dsh-meme, account
+credentials, conversation histories, or the original deployment's state.
+
+DSH host APIs are used at runtime. Third-party software must be obtained
+separately under its own license. This project does not grant rights to it.

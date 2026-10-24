@@ -1,0 +1,41 @@
+{
+  "kind": "historical-development-experiments",
+  "runtimePluginVersionEvaluated": "pre-1.4 prompt iterations; 1.4 rules",
+  "currentReleaseVersion": "1.6.0",
+  "model": "deepseek-flash",
+  "reasoningEffort": "low",
+  "rounds": [
+    {
+      "id": "baseline",
+      "requests": 4,
+      "tokens": 93696,
+      "report": "01-emotion-baseline.md"
+    },
+    {
+      "id": "followup",
+      "requests": 8,
+      "tokens": 188177,
+      "report": "02-relationship-anger.md"
+    },
+    {
+      "id": "prompt-retest",
+      "requests": 8,
+      "tokens": 193724,
+      "report": "03-prompt-retest.md"
+    }
+  ],
+  "totalRequests": 20,
+  "totalTokens": 475597,
+  "realQqTestMessages": 0,
+  "productionToolsExecuted": 0,
+  "historicalJointRuleChecks": 100,
+  "currentReleaseOfflineTests": 54,
+  "limits": [
+    "Small samples; no statistical stability claim",
+    "Historical baseline rather than interleaved randomized A/B",
+    "All fixed persona and 47 tool schemas included in usage",
+    "Retest also changed persona and preset guidance",
+    "One replication requested a meme search and had no final reply",
+    "No paid model-quality evaluation of 1.6 editable templates"
+  ]
+}
